@@ -1,0 +1,2 @@
+# dengnekirApp
+ bitirme projesi
