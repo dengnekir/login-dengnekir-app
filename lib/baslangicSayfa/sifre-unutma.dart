@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 
-import '!sifre-degistirme.dart';
+import '../OOP/sifre-degistirme.dart';
 import 'signup-kayitol.dart';
 import '../OOP/baslangicOop.dart';
 import 'ulke-telefon-kodlari.dart';

@@ -1,9 +1,15 @@
+import 'package:Vistopia/MainSayfa/Main-Chat.dart';
 import 'package:Vistopia/OOP/baslangicOop.dart';
 import 'package:Vistopia/OOP/colors.dart';
+import 'package:Vistopia/baslangicSayfa/login-girisyapma.dart';
+import 'package:Vistopia/baslangicSayfa/sifre-unutma.dart';
+import 'package:Vistopia/baslangicSayfa/signup-kayitol.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+
+import '../OOP/sifre-degistirme.dart';
 
 class Personel extends StatefulWidget {
   @override
@@ -20,10 +26,104 @@ class _PersonelState extends State<Personel> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
+          //hesap değiştirme
           title: TextButton(
             onPressed: () {
-              print("Kullanıcı adına basıldı");
+              showModalBottomSheet(
+                context: context,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                ),
+                builder: (context) {
+                  return SizedBox(
+                   height:screenHeight*3/10 ,
+                    width:screenWidth ,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Column(
+                              children: [
+                                Padding(
+                                  padding:  EdgeInsets.only(top:screenWidth*.7/10,left: screenWidth*.7/10,right: screenWidth*.5/10),
+                                  child: CircleAvatar(
+                                    radius: 30,
+                                    backgroundImage: AssetImage("image/logo.png"), // Profil resmi
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Ferhat Uslu",
+                                  style: TextStyle(
+                                    fontSize: screenWidth*.5/10,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  "@dengnekir",
+                                  style: TextStyle(
+                                    fontSize: screenWidth*.4/10,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+
+
+                         SizedBox(height: screenHeight*.2/10),
+                        Container(
+                          width: screenWidth*.9,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)
+                              =>baslangicSingup(),
+                              ));
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey[300],
+                              foregroundColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: const Text("Yeni Hesap Oluştur"),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Container(
+                          width: screenWidth*.9,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)
+                              =>baslangicLogin()
+                              ),);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey[300],
+                              foregroundColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: const Text("Var Olan Hesabı Ekle"),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
             },
+
             style: TextButton.styleFrom(
               foregroundColor: Colorss.lightGray,
               backgroundColor: Colors.transparent,
@@ -53,17 +153,100 @@ class _PersonelState extends State<Personel> {
             IconButton(
               onPressed: () {
                 print("Bildirimler butonuna basıldı");
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>Chat()));
               },
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                splashFactory: NoSplash.splashFactory,
+              ),
               icon: Icon(Icons.notifications),
             ),
             IconButton(
               onPressed: () {
-                print("Menü butonuna basıldı");
+                showModalBottomSheet(
+                  context: context,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+                  ),
+                  backgroundColor: Colorss.lightGray,
+                  builder: (BuildContext context) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Hesabım",style: TextStyle(
+                                    fontSize: screenWidth*.6/10,
+                                    fontWeight: FontWeight.bold
+                                  ),),
+                                  Text("@dengnekir",style: TextStyle(
+                                      fontSize: screenWidth*.4/10,
+                                  ),),
+                                ],
+                              ),
+                            ],
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.account_circle, color: Colors.black87),
+                            title: Text("Hesap Bilgileri" ,style: TextStyle(
+                              fontWeight: FontWeight.bold
+                            ),),
+                            subtitle: Text("Telefon Numarası, E-posta adresini ve diğer hesap bilgilerini gör"),
+                            onTap: () {
+                              print("Hesap Bilgileri tıklandı");
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HesapBilgileriSayfasi()));
+
+                            },
+                          ),
+                          Divider(),
+                          ListTile(
+                            leading: Icon(Icons.lock, color: Colors.black87),
+                            title: Text("Şifreni Değiştir",style: TextStyle(
+                              fontWeight: FontWeight.bold
+                            ),),
+                            subtitle: Text("Yeni Şifreni Oluştur"),
+
+                            onTap: () {
+                              
+                              print("Şifre Değiştir tıklandı");
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SifreUnutmaKod()));
+                            },
+                          ),
+                          Divider(),
+                          ListTile(
+                            leading: Icon(Icons.heart_broken, color: Colors.black87),
+                            title: Text("Hesabı Sil",style: TextStyle(fontWeight: FontWeight.bold),),
+                            subtitle: Text("Kalıcı olarak Hesabını Silmek İstiyor musun?"),
+
+                            onTap: () {
+                              print("Hesabı Sil tıklandı");
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>HesapSilmeCard()));
+                            },
+                          ),
+
+                        ],
+                      ),
+                    );
+                  },
+                );
               },
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                splashFactory: NoSplash.splashFactory,
+              ),
               icon: Icon(Icons.menu, size: screenWidth * 0.09),
               splashColor: Colorss.vibrantTeal,
               highlightColor: Colorss.lightGray,
             ),
+
+
+
           ],
         ),
         body: Column(
@@ -259,7 +442,7 @@ class _PersonelState extends State<Personel> {
                                               ),
                                             ),
                                           ),
-                                          Text("takip ağı",
+                                          Text("takipler",
                                             style: TextStyle(
                                               fontSize: screenWidth*0.04,
                                             ),
@@ -304,7 +487,7 @@ class _PersonelState extends State<Personel> {
                           width: screenWidth / 2.2,
                           height: screenHeight / 20,
                           child: CustomButton(
-                            text: "Yeni Faaliyet",
+                            text: "Aktiviteler",
                             onPressed: () {
                               print("Yeni gonderi duzenleme sayfasına gidiliyor");
                             },
