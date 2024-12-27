@@ -1,3 +1,4 @@
+import 'package:Vistopia/MainSayfa/Main-Personel.dart';
 import 'package:Vistopia/OOP/colors.dart';
 import 'package:Vistopia/baslangicSayfa/login-girisyapma.dart';
 import 'package:Vistopia/OOP/baslangicOop.dart';
@@ -10,6 +11,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'ulke-telefon-kodlari.dart';
 
 class baslangicSingup extends StatefulWidget {
+  final VerificationData data;
+  // Opsiyonel parametre, varsayılan bir değerle sağlanır
+  const baslangicSingup({Key? key, this.data = const VerificationData(userName: '', email: '', phoneNumber: '')}) : super(key: key);
 
   @override
 
@@ -367,9 +371,11 @@ class _baslangicSingupstate extends State<baslangicSingup> {
                               String mail=tfMail.text;
                               String birthday=tfbirthday.text;
                               String tlf=tfPhone.text;
+
                               print("Kullanıcı Adı:$name ve Şifresi $pasw . mail:$mail , doğum tarihi: $birthday, telefonu:$tlf");
                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
-                                  MainSayfa()
+                                  MainSayfa(verificationData:VerificationData(
+                                      email: mail, phoneNumber: tlf, userName: name) ,)
                               ));
                             }
 

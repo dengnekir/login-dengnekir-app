@@ -108,6 +108,22 @@ class _kodOnaylamaState extends State<kodOnaylama> {
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: "Mail Doğrulama Kodu",
+                        labelStyle: TextStyle(
+                          color: Colorss.pastelTeal
+                        ),
+                        errorStyle: TextStyle(
+                          color: Colorss.pastelTeal, // Hata mesaj rengi
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colorss.pastelTeal, // Hata durumu border rengi
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colorss.vibrantTeal, // Fokuslanmış hata durumu border rengi
+                          ),
+                        ),
                         suffix: GestureDetector(
                           child: Text(
                             _remainingTimeMail > 0
@@ -146,6 +162,22 @@ class _kodOnaylamaState extends State<kodOnaylama> {
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: "Telefon Doğrulama Kodu",
+                        labelStyle: TextStyle(
+                            color: Colorss.pastelTeal
+                        ),
+                        errorStyle: TextStyle(
+                          color: Colorss.pastelTeal, // Hata mesaj rengi
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colorss.pastelTeal, // Hata durumu border rengi
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colorss.vibrantTeal, // Fokuslanmış hata durumu border rengi
+                          ),
+                        ),
                         suffix: GestureDetector(
                           child: Text(
                             _remainingTimePhone > 0
@@ -181,14 +213,42 @@ class _kodOnaylamaState extends State<kodOnaylama> {
                             if (formKey.currentState!.validate()) {
                               String mail = tfMail.text;
                               String phone = tfPhone.text;
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => MainSayfa()),
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("Başarılı"),
+                                    content: Text("Bilgileriniz başarıyla değiştirildi!"),
+                                    actions: [
+                                      TextButton(
+                                        child: Text("Tamam"),
+                                        onPressed: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>MainSayfa(),));
+                                          // Dialogu kapatır
+
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
                               );
+
                             }
+    if (tfMail.text.isEmpty || tfPhone.text.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+    content: Text("Lütfen tüm alanları doldurunuz!"),
+    duration: Duration(seconds: 2),
+    backgroundColor: Colorss.vibrantTeal,
+    ),
+    );
+    }
+
                           },
                           child: Text("Onayla"),
+
                         ),
+
                         TextButton(
                           onPressed: () {
                             Navigator.pushReplacement(

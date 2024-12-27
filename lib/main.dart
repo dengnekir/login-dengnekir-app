@@ -1,67 +1,68 @@
-
-
-import 'package:Vistopia/MainSayfa/Main-Location.dart';
+import 'package:Vistopia/MainSayfa/Main-Home-Index.dart';
 import 'package:flutter/material.dart';
 
-import 'MainSayfa/Main-Chat.dart';
-import 'MainSayfa/Main-Home-Index.dart';
+import 'MainSayfa/Main-Location.dart';
 import 'MainSayfa/Main-Personel.dart';
+import 'MainSayfa/Main-Post.dart';
 import 'MainSayfa/Main-Search.dart';
-
-
+import 'OOP/baslangicOop.dart';
 void main() {
-  runApp(const MainSayfa());
+  runApp(MaterialApp(
+    home: MainSayfa(),
+    debugShowCheckedModeBanner: false,
+  ));
 }
 
-class MainSayfa extends StatelessWidget {
-  const MainSayfa({super.key});
+class MainSayfa extends StatefulWidget {
+  final VerificationData? verificationData; // Optional data
+  final Kullanici? userdata; // Optional data
+
+  const MainSayfa({this.verificationData ,this.userdata});
+  @override
+  State<MainSayfa> createState() => _MainSayfaState();
+}
+
+
+class _MainSayfaState extends State<MainSayfa> {
+  late final List<Widget> sayfaListesi;
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Dengnekir',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white70),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Dengnekir'),
-      debugShowCheckedModeBanner: false,
-    );
+  void initState() {
+    super.initState();
+    sayfaListesi = [
+      Location(),
+      Search(),
+      HomeIndex(),
+      PostAdd(),
+      // Eğer userdata null ise, default bir kullanıcı objesi oluşturabilirsiniz
+      Personel(
+        data: widget.verificationData,
+        userDataaa: widget.userdata ??
+            Kullanici(isim: 'Default User',
+                hakkimda: 'defaultc1',
+                hakkimda2:'default2',
+                baglantiLinki:".com",
+
+            ),
+      ),// Removed data parameter
+    ];
   }
-}
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  //sırasıyla bottombar sayfaları
-  var sayfaListesi = [Location(), Search(),HomeIndex(), Chat(), Personel()];
-  //sayfa acıldığında acık olan bottombar
   int secilenIndex = 2;
-
-//ikonların mevcut hali
-  bool messageIcon = true;
+  bool postAddIcon = true;
   bool mainIcon = true;
   bool searchIcon = true;
   bool personIcon = true;
   bool navigationIcon = true;
-//ikon rengi ne ise ikon o sekil alır ikinci ikon calısmaz
+
   void _onIconTapped(int index) {
     setState(() {
       if (index != secilenIndex) {
         secilenIndex = index;
-
-        // İkon durumlarını sıfırlama
         navigationIcon = index == 0 ? !navigationIcon : true;
         searchIcon = index == 1 ? !searchIcon : true;
         mainIcon = index == 2 ? !mainIcon : true;
-        messageIcon = index == 3 ? !messageIcon : true;
+        postAddIcon = index == 3 ? !postAddIcon : true;
         personIcon = index == 4 ? !personIcon : true;
       }
     });
@@ -71,13 +72,12 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      //acılacak sayfa listesi
       body: sayfaListesi[secilenIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
             icon: Icon(
-              navigationIcon ? Icons.location_off_sharp: Icons.location_on,
+              navigationIcon ? Icons.location_off_sharp : Icons.location_on,
               size: 30,
             ),
             label: "",
@@ -98,7 +98,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              messageIcon ? Icons.notifications_paused : Icons.notifications,
+              postAddIcon
+                  ? Icons.add_box_outlined
+                  : Icons.add_circle_outline_outlined,
               size: 30,
             ),
             label: "",
@@ -111,11 +113,11 @@ class _MyHomePageState extends State<MyHomePage> {
             label: "",
           ),
         ],
-        type: BottomNavigationBarType.fixed,//arkplan renginin değişmesini sağlar
-        backgroundColor:Colors.black, //arksplan rengi
-        selectedItemColor: Colors.white70,//secili ikon rengi
-        unselectedItemColor: Colors.white,//secili olmayan ikon rengi
-        currentIndex: secilenIndex,//sayfalar arası baglantı ile bottom bar baglantı noktası
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.black,
+        selectedItemColor: Colors.white70,
+        unselectedItemColor: Colors.white,
+        currentIndex: secilenIndex,
         onTap: (index) => _onIconTapped(index),
       ),
     );

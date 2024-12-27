@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:Vistopia/OOP/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,13 +8,29 @@ import 'package:flutter/services.dart';
 
 
 ////////////// KAYIT EKRANII BİLGİLERİ KOD ONAYINA AKTARMA/////////////////
+////////////////KOD login giriş SAYFASI BAGLANTISI////////////////////
+class Kullanici {
+ final String isim;
+ final String hakkimda;
+ final String hakkimda2;
+ final String baglantiLinki;
+
+
+  Kullanici({
+    required this.isim,
+    required this.hakkimda,
+    required this.hakkimda2,
+    required this.baglantiLinki,
+
+  });
+}
+
 ////////////////KOD ONAYI-SİNUP SAYFASI BAGLANTISI////////////////////
 class VerificationData {
   final String email;
   final String phoneNumber;
   final String userName;
-
-  VerificationData({required this.email, required this.phoneNumber,required this.userName});
+const  VerificationData({required this.email, required this.phoneNumber,required this.userName});
 }
 
 ////////////////////////DECORATİON ORTAK KISIM//////////////////////

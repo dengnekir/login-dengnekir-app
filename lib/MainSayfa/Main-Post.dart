@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 
-class Chat extends StatefulWidget {
+class PostAdd extends StatefulWidget {
 
   @override
-  State<Chat> createState() => _ChatState();
+  State<PostAdd> createState() => _PostAddState();
 }
 
-class _ChatState extends State<Chat> {
+class _PostAddState extends State<PostAdd> {
   @override
   Widget build(BuildContext context) {
     return Center(

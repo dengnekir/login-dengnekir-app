@@ -1,6 +1,8 @@
-import 'package:Vistopia/MainSayfa/Main-Chat.dart';
+import 'package:Vistopia/MainSayfa/Main-Post.dart';
+import 'package:Vistopia/OOP/abone-takipci-personel.dart';
 import 'package:Vistopia/OOP/baslangicOop.dart';
 import 'package:Vistopia/OOP/colors.dart';
+import 'package:Vistopia/OOP/profiliDuzenle-personel.dart';
 import 'package:Vistopia/baslangicSayfa/login-girisyapma.dart';
 import 'package:Vistopia/baslangicSayfa/sifre-unutma.dart';
 import 'package:Vistopia/baslangicSayfa/signup-kayitol.dart';
@@ -8,15 +10,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import '../OOP/sifreDegistir-hesapSil-onayKod.dart';
+// UserData üzerinden verilere erişiyoruz takipçi ve takip sayısı
+final userData = FollowersFollowingPage();
 
-import '../OOP/sifre-degistirme.dart';
 
-class Personel extends StatefulWidget {
+ class Personel extends StatefulWidget {
+  final VerificationData? data; // Make data nullable
+  final Kullanici userDataaa;
+
+  const Personel({this.data, required this.userDataaa});
+
+
   @override
   State<Personel> createState() => _PersonelState();
 }
 
 class _PersonelState extends State<Personel> {
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -60,14 +71,14 @@ class _PersonelState extends State<Personel> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Ferhat Uslu",
+                                  "${widget.userDataaa.isim}",
                                   style: TextStyle(
                                     fontSize: screenWidth*.5/10,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 Text(
-                                  "@dengnekir",
+                                  "${widget.data?.userName}",
                                   style: TextStyle(
                                     fontSize: screenWidth*.4/10,
                                     color: Colors.grey[600],
@@ -133,7 +144,7 @@ class _PersonelState extends State<Personel> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "dengnekir",
+                  "@${widget.data?.userName}",
                   style: TextStyle(
                     fontSize: screenWidth * 0.06,
                     fontWeight: FontWeight.bold,
@@ -152,14 +163,14 @@ class _PersonelState extends State<Personel> {
           actions: [
             IconButton(
               onPressed: () {
-                print("Bildirimler butonuna basıldı");
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>Chat()));
+                print("gonderi ekleme butonuna basıldı");
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>PostAdd()));
               },
               style: TextButton.styleFrom(
                 backgroundColor: Colors.transparent,
                 splashFactory: NoSplash.splashFactory,
               ),
-              icon: Icon(Icons.notifications),
+              icon: Icon(Icons.add_box_outlined),
             ),
             IconButton(
               onPressed: () {
@@ -185,7 +196,7 @@ class _PersonelState extends State<Personel> {
                                     fontSize: screenWidth*.6/10,
                                     fontWeight: FontWeight.bold
                                   ),),
-                                  Text("@dengnekir",style: TextStyle(
+                                  Text("@${widget.data?.userName}",style: TextStyle(
                                       fontSize: screenWidth*.4/10,
                                   ),),
                                 ],
@@ -200,7 +211,8 @@ class _PersonelState extends State<Personel> {
                             subtitle: Text("Telefon Numarası, E-posta adresini ve diğer hesap bilgilerini gör"),
                             onTap: () {
                               print("Hesap Bilgileri tıklandı");
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HesapBilgileriSayfasi()));
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
+                                  HesapBilgileriSayfasi( data: widget.data!,)));
 
                             },
                           ),
@@ -213,7 +225,7 @@ class _PersonelState extends State<Personel> {
                             subtitle: Text("Yeni Şifreni Oluştur"),
 
                             onTap: () {
-                              
+
                               print("Şifre Değiştir tıklandı");
                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SifreUnutmaKod()));
                             },
@@ -226,7 +238,13 @@ class _PersonelState extends State<Personel> {
 
                             onTap: () {
                               print("Hesabı Sil tıklandı");
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>HesapSilmeCard()));
+                              // HesapSilmeCard'ı çağırdığınız yerde:
+                              showDialog(
+                                context: context,
+                                barrierColor: Colors.grey.withOpacity(0.7), // veya istediğiniz renk
+                                builder: (BuildContext context) => HesapSilmeCard(),
+
+                              );
                             },
                           ),
 
@@ -276,6 +294,7 @@ class _PersonelState extends State<Personel> {
                             child: CustomButton(
                               text: "Profili Düzenle",
                               onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileEditPage()));
                                 print("profili duzenleme sayfasına gidiliyor");
                               },
                               backgroundColor: Colorss.lightGray.withOpacity(0.7),
@@ -328,7 +347,7 @@ class _PersonelState extends State<Personel> {
                                           child: Row(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              Text("Ferhat Uslu",
+                                              Text("${widget.userDataaa.isim}",
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: screenWidth*0.05
@@ -339,7 +358,7 @@ class _PersonelState extends State<Personel> {
                                         ),
                                         Row(
                                           children: [
-                                            Text("Yanlız Kalacksın Kardeş",
+                                            Text("${widget.userDataaa.hakkimda}",
                                               style: TextStyle(
                                                   fontSize: screenWidth*0.04
                                               ),
@@ -348,7 +367,7 @@ class _PersonelState extends State<Personel> {
                                         ),
                                         Row(
                                           children: [
-                                            Text("İstanbul/ Türkiye",
+                                            Text("${widget.userDataaa.hakkimda2}",
                                               style: TextStyle(
                                                   fontSize: screenWidth*0.04
                                               ),
@@ -361,7 +380,7 @@ class _PersonelState extends State<Personel> {
                                               onTap: (){
                                                 print("harici kişisel baglantıya aktarılıyor");
                                               },
-                                              child: Text("www.youtube.com",
+                                              child: Text("${widget.userDataaa.baglantiLinki}",
                                                 style: TextStyle(
                                                     fontSize: screenWidth*0.04,
                                                     color: Colors.indigo
@@ -411,19 +430,21 @@ class _PersonelState extends State<Personel> {
                                           GestureDetector(
                                             onTap: (){
                                               print("takipçilere  basıldı");
+                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>FollowersFollowingPage()));
                                             },
-                                            child: Text("20",
+                                            child: Text("${userData.getFollowersCount()}",
                                               style: TextStyle(
                                                   fontSize: screenWidth*0.05,
                                                   fontWeight: FontWeight.bold
                                               ),
                                             ),
                                           ),
-                                          Text("abone",
-                                            style: TextStyle(
-                                              fontSize: screenWidth*0.04,
-                                            ),
-                                          ),
+                                           Text("abone",
+                                             style: TextStyle(
+                                               fontSize: screenWidth*0.04,
+                                             ),
+                                           ),
+
                                         ],
                                       ),
                                     ),
@@ -433,9 +454,11 @@ class _PersonelState extends State<Personel> {
                                         children: [
                                           GestureDetector(
                                             onTap: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>FollowersFollowingPage()));
+
                                               print("takip edilenlere basıldı");
                                             },
-                                            child: Text("150",
+                                            child: Text("${userData.getFollowingCount()}",
                                               style: TextStyle(
                                                   fontSize: screenWidth*0.05,
                                                   fontWeight: FontWeight.bold
@@ -459,49 +482,6 @@ class _PersonelState extends State<Personel> {
                       ],
                     ),
                   //hakkımda ve yeni gonderi faliyetleri
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          width: screenWidth / 2.2,
-                          height: screenHeight / 20,
-                          child: CustomButton(
-                            text: "Hakkımda",
-                            onPressed: () {
-                              print("Hakkımda duzenleme sayfasına gidiliyor");
-                            },
-                            backgroundColor: Colorss.lightGray.withOpacity(0.7),
-                            textColor: Colors.black87,
-                            borderColor: Colors.transparent,
-                            elevation: 1,
-                            borderRadius: 30,
-                            fontSize: screenWidth * 0.05,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          width: screenWidth / 2.2,
-                          height: screenHeight / 20,
-                          child: CustomButton(
-                            text: "Aktiviteler",
-                            onPressed: () {
-                              print("Yeni gonderi duzenleme sayfasına gidiliyor");
-                            },
-                            backgroundColor: Colorss.lightGray.withOpacity(0.7),
-                            textColor: Colors.black87,
-                            borderColor: Colors.transparent,
-                            elevation: 1,
-                            borderRadius: 30,
-                            fontSize: screenWidth * 0.05,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
@@ -536,3 +516,4 @@ class _PersonelState extends State<Personel> {
     );
   }
 }
+///////////////////////////////////////////////////////////////////////////////////

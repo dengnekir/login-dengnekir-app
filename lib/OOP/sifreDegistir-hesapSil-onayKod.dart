@@ -8,10 +8,9 @@ import 'package:flutter/services.dart';
 
 import '../main.dart';
 import 'baslangicOop.dart';
-
+//şifre unutma
 /////////////////////////////////////////////////KODU ONAYLAMA//////////
 class SifreUnutmaKod extends StatefulWidget {
-  const SifreUnutmaKod({Key? key}) : super(key: key);
 
   @override
   State<SifreUnutmaKod> createState() => _SifreUnutmaKodState();
@@ -206,15 +205,7 @@ class _SifreUnutmaKodState extends State<SifreUnutmaKod> {
                                 borderRadius: 30,
                                 fontSize: screenWidth * 0.05,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: GestureDetector(
-                                  child: Text("Şifreni mi Unuttun?",),
-                                  onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>sifreYenileme()));
-                                  },
-                                ),),
-                            ],
+                          ],
                           ),
                         ),
                       ),
@@ -232,18 +223,18 @@ class _SifreUnutmaKodState extends State<SifreUnutmaKod> {
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
 //hesap bilgilerini telefon mail vs guncelleme
-
 class HesapBilgileriSayfasi extends StatefulWidget {
+final VerificationData data;
+const HesapBilgileriSayfasi({Key? key, required this.data}) : super(key: key);
   @override
   _HesapBilgileriSayfasiState createState() => _HesapBilgileriSayfasiState();
 }
 
 class _HesapBilgileriSayfasiState extends State<HesapBilgileriSayfasi> {
-  // Kullanıcı bilgileri
-  String kullaniciAdi = '@dengnekir';
-  String telefonNumarasi = '05427746359';
-  String mailAdresi = 'usluferhat98@gmail.com';
 
+  var kullaniciAdi;
+  var mailAdresi;
+  var telefonNumarasi;
   // TextController'lar
   TextEditingController kullaniciAdiController = TextEditingController();
   TextEditingController telefonController = TextEditingController();
@@ -257,9 +248,9 @@ class _HesapBilgileriSayfasiState extends State<HesapBilgileriSayfasi> {
   void initState() {
     super.initState();
     // TextController'lara mevcut kullanıcı bilgilerini atıyoruz
-    kullaniciAdiController.text = kullaniciAdi;
-    telefonController.text = telefonNumarasi;
-    mailController.text = mailAdresi;
+    kullaniciAdiController.text = kullaniciAdi=widget.data.userName;
+    telefonController.text = telefonNumarasi=widget.data.phoneNumber;
+    mailController.text = mailAdresi=widget.data.email;
   }
 
   @override
@@ -489,6 +480,7 @@ class HesapSilmeCard extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return AlertDialog(
+
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
